@@ -11,11 +11,13 @@ version overview
 
 
 **General repositories**
+
 * EHN repositories for various open source projects, which contain components for QR generation/verification or even complete creation/validation chains. Initially, all Austrian components are published at this place, since there is a lively exchange and collaboration of developers: https://github.com/ehn-digital-green-development
 * Repositories for reference implementations provided by the EU: https://github.com/eu-digital-green-certificates/
 * Specification for creating the QR codes: https://github.com/ehn-digital-green-development/hcert-spec/blob/main/hcert_spec.md
 
 **Austrian source code**
+
 All Austrian source code will be forked/transferred to this place in the next weeks. The source code is published with the [Apache 2 license](https://www.apache.org/licenses/LICENSE-2.0) to allow for a flexible use. For now, the code is published and maintained in the EHN repositories. The following overview provides an inventory of the published code and its purpose:
 
 * **Kotlin-based creation/validation core**: 
@@ -32,9 +34,11 @@ All Austrian source code will be forked/transferred to this place in the next we
 	* https://github.com/ehn-digital-green-development/hcert-app-swift
 
 **Further plans**
+
 The JavaScript library provided by the Kotlin multiplatform project will be used for the Austrian Web Apps for QR validation. The source code of this Web Apps will also be published. All validation apps adhere to the privacy principles: Validation of the qr-codes must be done offline (for the Web App: all the code must be present on the client), online verification is not allowed due to the possibility of user tracing. Online requests by the apps are limited to retrieving information on the trusted signature certificates of other member states and later revocation lists.
 
 **Legal/Impressum**
+
 [Bundesministerium für Soziales, Gesundheit, Pflege und Konsumentenschutz](https://www.sozialministerium.at/)  
 Stubenring 1  
 1010 Wien  
