@@ -4,7 +4,7 @@
 
 This overview points to the relevant Austrian/EU repositories that contain the specifications for the EU Digital COVID Certificates and the source code of the Austrian implementation. This page and the repository structure are work in progress and will be updated continuously.
 
-version overview
+Versions
 |Date (version)|Description |
 |--|--|
 | 02.06.2021 | initial version |
