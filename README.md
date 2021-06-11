@@ -12,26 +12,26 @@ Versions
 
 **General repositories**
 
-* EHN repositories for various open source projects, which contain components for QR generation/verification or even complete creation/validation chains. Initially, all Austrian components are published at this place, since there is a lively exchange and collaboration of developers: https://github.com/ehn-digital-green-development
+* EHN repositories for various open source projects, which contain components for QR generation/verification or even complete creation/validation chains. Initially, all Austrian components are published at this place, since there is a lively exchange and collaboration of developers: https://github.com/ehn-dcc-development/
 * Repositories for reference implementations provided by the EU: https://github.com/eu-digital-green-certificates/
-* Specification for creating the QR codes: https://github.com/ehn-digital-green-development/hcert-spec/blob/main/hcert_spec.md
+* Specification for creating the QR codes: https://github.com/ehn-dcc-development/hcert-spec/blob/main/hcert_spec.md
 
 **Austrian source code**
 
 All Austrian source code will be forked/transferred to this place in the next weeks. The source code is published with the [Apache 2 license](https://www.apache.org/licenses/LICENSE-2.0) to allow for a flexible use. For now, the code is published and maintained in the EHN repositories. The following overview provides an inventory of the published code and its purpose:
 
 * **Kotlin-based creation/validation core**: 
-	* https://github.com/ehn-digital-green-development/hcert-kotlin
+	* https://github.com/ehn-dcc-development/hcert-kotlin
 	* This repository contains a multi-platform Kotlin project that provides JavaScript/JVM libs
 		* for creating the Austrian QR-Codes (JVM)
 		* for validating the EU QR-Codes (JVM/JavaScript) for native Android (Kotlin/JVM) or Browser-based apps (JavaScript)
         * for generating the Austrian trust list (which distributes the signature certificates (DSCs) of the other member states to the validation apps)
         * for the test-runner which validates the correctness of the validation library against the test-data of all member states (including corner cases) provided here: https://github.com/eu-digital-green-certificates/dgc-testdata 
 *   **Demo Service, that generates test codes (based on the Kotlin creation core)**: https://dgc.a-sit.at/ehn/
-*   **Swift Validation core for native iOS**: https://github.com/ehn-digital-green-development/ValidationCore
+*   **Swift Validation core for native iOS**: https://github.com/ehn-dcc-development/ValidationCore
 *   **Demo Apps for Android and iOS**: Disclaimer: These are only demonstration apps that where used for testing and evaluation purposes, they do not represent the final output for the Austrian validation apps, which need to consider the legal requirements by Austrian law. The demo apps will not be published in the App Stores and will not be used for the validation of real codes. The iOS app is based on the iOS validation core, the Android app uses the Kotlin core:
-	* https://github.com/ehn-digital-green-development/hcert-app-kotlin
-	* https://github.com/ehn-digital-green-development/hcert-app-swift
+	* https://github.com/ehn-dcc-development/hcert-app-kotlin
+	* https://github.com/ehn-dcc-development/hcert-app-swift
 
 **Further plans**
 
