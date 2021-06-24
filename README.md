@@ -39,7 +39,7 @@ The JavaScript library provided by the Kotlin multiplatform project will be used
 
 **Loading the "trust list" and "value sets"**
 
-In order to operate verifier and/or  wallet apps, data from the “trust list” and “value sets”  is required. This data can be loaded via a web service provided by the BMSGPK. A one-time registration is require, a corresponding form will be published here soon.
+In order to operate verifier and/or  wallet apps, data from the “trust list” and “value sets”  is required. This data can be loaded via a web service provided by the BMSGPK. A one-time registration is required, a corresponding form will be published here soon.
 
 **Legal/Impressum**
 
