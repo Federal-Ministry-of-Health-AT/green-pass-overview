@@ -86,7 +86,7 @@ Business rules allow to determine, if a person holding a DCC would be allowed to
 The provided files are based on the COSE/CBOR standards which are also used for the DCCs, whereby the "content" file contains the CBOR-encoded data (rules, value sets, trust list data) and the "signature" file represents a signed COSE/CWT structure, which contains the hash-value of the respective "content" file. The Austrian validation cores provide functions to validate the files and extract the content.
 
 Signature certificates which are used to signed the structures (required for validation):
-**Acceptance system** (lists hosted on https://dgc-trusttest.gv.at)
+**Acceptance system** (lists hosted on https://dgc-trusttest.qr.gv.at)
 ```
 -----BEGIN CERTIFICATE-----
 MIIB6zCCAZGgAwIBAgIKAXmEuohlRbR2qzAKBggqhkjOPQQDAjBQMQswCQYDVQQG
