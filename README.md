@@ -43,7 +43,7 @@ Austria started early to work together with the EU task force to create validati
  - **Kotlin-based creation/validation core**: https://github.com/ehn-dcc-development/hcert-kotlin
 	* This repository contains a multi-platform Kotlin project that provides JavaScript/JVM libs
 		* for **creating the Austrian DCCs** (JVM) (used by the backend service for creating the Austrian DCCs)
-		* for **validating the DCCs** for native Android (Kotlin/JVM) or Browser-based apps (JavaScript): The JavaScript library is used by the Austrian validation apps https://qr.gv.at, https://greenheck.gv.at (and its native counter part on Android/iOS) and the BRZ wallet apps (for checking the codes internally).
+		* for **validating the DCCs** for native Android (Kotlin/JVM) or Browser-based apps (JavaScript): The JavaScript library is used by the Austrian validation apps https://qr.gv.at, https://greencheck.gv.at (and its native counter part on Android/iOS) and the BRZ wallet apps (for checking the codes internally).
         * for downloading/generating the Austrian trust list/business rule list/value sets
         * for the test-runner which validates the correctness of the validation library against the test-data of all member states (including corner cases) provided here: https://github.com/eu-digital-green-certificates/dgc-testdata 
  -   **Swift Validation core for native iOS**: https://github.com/ehn-dcc-development/ValidationCore: This library is used by the native app used by the Austrian police and the BRZ wallet app for validating the code internally.
