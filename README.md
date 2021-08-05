@@ -10,6 +10,8 @@ Versions
 |--|--|
 | 02.06.2021 | initial version |
 | 29.07.2021 | Details on architecture, trust lists/business rules/value sets |
+| 05.08.2021 | Fixed links to greencheck.gv.at and test-systems, thx to Mathias Panzenböck |
+
 
 
 # General information
