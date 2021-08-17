@@ -53,7 +53,7 @@ Austria started early to work together with the EU task force to create validati
 ## Business rules validation
 Business rules allow to determine, if a person holding a DCC would be allowed to enter another country based on their vaccination, recovery or test status. Those rules are defined by each country, distributed via the EU Gateway and can be checked by rule eingines, e.g. implemented in the Verifier Apps or Wallets.
 
- - The specification, examples and reference implementations can be founf here: https://github.com/ehn-dcc-development/dgc-business-rules
+ - The specification, examples and reference implementations can be found here: https://github.com/ehn-dcc-development/dgc-business-rules
  - Rules and test data of member states: https://github.com/eu-digital-green-certificates/dgc-business-rules-testdata: The definition of rules from various contries in CertLogic format can be viewed here.
  - Implementations of JsonLogic for different platforms:
 	 - Native Swift implementation: https://github.com/eu-digital-green-certificates/json-logic-swift
