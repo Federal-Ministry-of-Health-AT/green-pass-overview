@@ -62,10 +62,9 @@ The rules file provided by the Austrian implementations (see below) offer two ca
       - **NG**: rules Nachtgastronomie/night clubs
 
 Detailed information on rules engines and test data:
- - The specification, examples and reference implementations can be found here: https://github.com/ehn-dcc-development/dgc-business-rules
+ - The specification, examples and reference implementations (especially JS) can be found here: https://github.com/ehn-dcc-development/dgc-business-rules
  - Rules and test data of member states: https://github.com/eu-digital-green-certificates/dgc-business-rules-testdata: The definition of rules from various contries in CertLogic format can be viewed here.
  - Implementations of JsonLogic for different platforms:
-	 - Native Swift implementation: https://github.com/eu-digital-green-certificates/json-logic-swift
 	 - iOS implementation: https://github.com/eu-digital-green-certificates/dgc-certlogic-ios
 	 - Android implementation in Kotlin: https://github.com/eu-digital-green-certificates/dgc-certlogic-android
  - To check all rules in the testdata repository automatically against different DCC payloads, use https://dcc-crosscheck.vercel.app/
