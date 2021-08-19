@@ -11,7 +11,7 @@ Versions
 | 02.06.2021 | initial version |
 | 29.07.2021 | Details on architecture, trust lists/business rules/value sets |
 | 05.08.2021 | Fixed links to greencheck.gv.at and test-systems, thx to Mathias Panzenböck |
-
+| 19.08.2021 | Added information on national business rules |
 
 
 
@@ -52,7 +52,7 @@ Austria started early to work together with the EU task force to create validati
  -   **Swift Validation core for native iOS**: https://github.com/ehn-dcc-development/ValidationCore: This library is used by the native app used by the Austrian police and the BRZ wallet app for validating the code internally.
 
 ## Business rules validation
-Business rules allow to determine, if a person holding a DCC would be allowed to enter another country based on their vaccination, recovery or test status. Those rules are defined by each country, distributed via the EU Gateway and can be checked by rule eingines, e.g. implemented in the Verifier Apps or Wallets.
+Business rules allow to determine, if a person holding a DCC would be allowed to enter another country based on their vaccination, recovery or test status. Those rules are defined by each country, distributed via the EU Gateway and can be checked by rule engines, e.g. implemented in the Verifier Apps or Wallets.
 
 The rules file provided by the Austrian implementations (see below) offer two categories of rules:
  - **Global rules** that apply when entering Austria; those rules are also uploaded to the EU-Gateway. Within the provided file, they are stored with the country ID "AT" and an empty "region" field.
