@@ -12,7 +12,7 @@ Versions
 | 29.07.2021 | Details on architecture, trust lists/business rules/value sets |
 | 05.08.2021 | Fixed links to greencheck.gv.at and test-systems, thx to Mathias Panzenböck |
 | 19.08.2021 | Added information on national business rules |
-
+| 06.10.2021 | Added information for Viennese business rules |
 
 
 # General information
