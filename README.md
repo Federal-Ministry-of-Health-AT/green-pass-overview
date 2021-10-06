@@ -57,9 +57,13 @@ Business rules allow to determine, if a person holding a DCC would be allowed to
 The rules file provided by the Austrian implementations (see below) offer two categories of rules:
  - **Global rules** that apply when entering Austria; those rules are also uploaded to the EU-Gateway. Within the provided file, they are stored with the country ID "AT" and an empty "region" field.
  - **National rules** that only apply in Austria for the various profiles. Within the provided file, those rules are stored with the country ID "AT" and profile IDs that are kept within the "region" field:
-      - **ET**: rules for Eintrittstest/entry test
-      - **BG**: rules for Berufsgruppen/Special Occupation
-      - **NG**: rules Nachtgastronomie/night clubs
+      - General rules for all Austrian states (except Vienna): 
+           - **ET**: rules for Eintrittstest/entry test
+           - **BG**: rules for Berufsgruppen/Special Occupation
+           - **NG**: rules Nachtgastronomie/night clubs
+      - Rules for Vienna
+           - **ET-W**: rules for Eintrittstest/entry test in Vienna
+           - **NG-W**: rules Nachtgastronomie/night clubs in Vienna
 
 Detailed information on rules engines and test data:
  - The specification, examples and reference implementations (especially JS) can be found here: https://github.com/ehn-dcc-development/dgc-business-rules
