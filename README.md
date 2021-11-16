@@ -1,6 +1,3 @@
-
-
-
 # Austrian implementation of the EU Digital COVID Certificates
 
 This overview points to the relevant Austrian/EU repositories that contain the specifications for the EU Digital COVID Certificates (further abbrev. as DCC), the architecture and the source code of the Austrian implementation. This page and the repository structure are work in progress and will be updated continuously.
@@ -13,7 +10,7 @@ Versions
 | 05.08.2021 | Fixed links to greencheck.gv.at and test-systems, thx to Mathias Panzenböck |
 | 19.08.2021 | Added information on national business rules |
 | 06.10.2021 | Added information for Viennese business rules |
-
+| 16.11.2021 | Added information for AT business rules and Engine "AT-METADATA"|
 
 # General information
 The following leads provided the entry points for the relevant EU repositories, which contain code and information.
@@ -56,14 +53,13 @@ Business rules allow to determine, if a person holding a DCC would be allowed to
 
 The rules file provided by the Austrian implementations (see below) offer two categories of rules:
  - **Global rules** that apply when entering Austria; those rules are also uploaded to the EU-Gateway. Within the provided file, they are stored with the country ID "AT" and an empty "region" field.
- - **National rules** that only apply in Austria for the various profiles. Within the provided file, those rules are stored with the country ID "AT" and profile IDs that are kept within the "region" field:
-      - General rules for all Austrian states (except Vienna): 
+ - **National rules** that only apply in Austria for the various profiles. Within the provided file, those rules are stored with the country ID "AT" and profile IDs that are kept within the "region" field. The profile ID is defined as follows: **Type[-State[-MD]]**
+      - The **Type** of the rule defines
            - **ET**: rules for Eintrittstest/entry test
            - **BG**: rules for Berufsgruppen/Special Occupation
-           - **NG**: rules Nachtgastronomie/night clubs
-      - Rules for Vienna
-           - **ET-W**: rules for Eintrittstest/entry test in Vienna
-           - **NG-W**: rules Nachtgastronomie/night clubs in Vienna
+           - **NG**: rules for Nachtgastronomie/night clubs
+      - Federal **State** (Bundesland) defines, where the rule applies: BGLD, KTN, NOE, OOE, SBG, STMK, T, VBG, W
+      - The **MD** (METADATA) part of the Region field indicates, that the rule is not a CERTLOGIC rule (which returns true or false). It is a rule with the same logic as the corresponding CERTLOGIC rule but it returns a date indicating until when it is valid. This date can e.g. be displayed in wallet apps. If such a feature is not needed, the MD rules can be ignored. If a rule is a MD rule, the Engine field is set to “AT-METADATA”.
 
 Detailed information on rules engines and test data:
  - The specification, examples and reference implementations (especially JS) can be found here: https://github.com/ehn-dcc-development/dgc-business-rules
@@ -240,9 +236,9 @@ ce3306f52665871b69923cd1
 	* https://github.com/ehn-dcc-development/hcert-app-kotlin
 	* https://github.com/ehn-dcc-development/hcert-app-swift
 
-# Getting access to "trust list", "business rules" and "value sets"
+# Accessing "trust list", "business rules" and "value sets"
 
-In order to operate verifier and/or  wallet apps, data from the “trust list” and “value sets”  is required. This data can be loaded via a web service provided by the BMSGPK. A one-time registration is required, a corresponding form will be published here soon.
+In order to operate verifier and/or wallet apps, data from the “trust list”, "business rules" and “value sets”  is required. This data can be loaded via the URLs listed above. Please note the "fair-use policy": As the data in the lists changes quite rarely (maximum once per day) a polling interval of e.g. 4 hours is more than enough.
 
 # Further repositories
 * Green Pass App (Android and iOS, OpenSource): https://github.com/BRZ-GmbH/
