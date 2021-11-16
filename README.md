@@ -238,7 +238,7 @@ ce3306f52665871b69923cd1
 
 # Accessing "trust list", "business rules" and "value sets"
 
-In order to operate verifier and/or wallet apps, data from the “trust list”, "business rules" and “value sets”  is required. This data can be loaded via the URLs listed above. Please note the "fair-use policy": As the data in the lists changes quite rarely (maximum once per day) a polling interval of e.g. 4 hours is more than enough.
+In order to operate verifier and/or wallet apps, data from the “trust list”, "business rules" and “value sets”  is required. This data can be loaded via the URLs listed above. Please note the "fair-use policy": As the data in the lists changes quite rarely (maximum once per day) a polling interval of e.g. 4 hours is more than enough. Clients may be blocked for any violation of this policy.
 
 # Further repositories
 * Green Pass App (Android and iOS, OpenSource): https://github.com/BRZ-GmbH/
