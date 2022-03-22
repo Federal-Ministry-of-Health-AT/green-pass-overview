@@ -69,6 +69,23 @@ Detailed information on rules engines and test data:
 	 - Android implementation in Kotlin: https://github.com/eu-digital-green-certificates/dgc-certlogic-android
  - To check all rules in the testdata repository automatically against different DCC payloads, use https://dcc-crosscheck.vercel.app/
 
+## NEWS (22.3.2022) Introduction of Simple Business Rule Format
+In the current format, there is a separate complex business rule for each condition, federal state and region, which results in an enormous overhead, as information is often redundant. This makes it extremely costly to maintain the current business rules and also limits the extensibility for new areas (like 1G, 2G, Work, Theater, etc) as the result data file would simply grow very large.
+
+That's why we will introduce a new simplified business rule format soon that eliminates all of these shortcomings. This new format aims to offer the following benefits:
+
+- A single file that contains all national rules
+- A very concise and space-saving format to define rules (the current payload with rules for Entry and Club in all Austrian federal states consists of 390 individual rules resulting in ca. 500KB while the payload in the new format for 8 regions is ca. 15KB and less than 900 easily-readable lines)
+- Reusability of JSONLogic conditions to define conditions that can be applied to certificate
+- Support for a flexible definition of "profiles" - e.g. Entry, Club, Work, 1G, 2G, 2G+, etc
+- Easy inclusion or exclusion of federal states (= regions in the format) to apply the same ruleset to multiple federal states
+- Simply reuse of rulesets from another profile to avoid redefining the same conditions multiple times (e.g. validity for vaccinations needs to be defined only once and can then be reused for 1G, 2G, 3G, Entry, Club, etc.)
+- Definition of target groups based on conditions (e.g. to define different rules for people of different ages)
+- Validity and Metadata are defined together (instead of different regions in the current format, the new format specifies the validity timerange directly in the rule itself)
+- Support for "external conditions" that can only be evaluated by the containing app (e.g. to support 2G+ where the app might need to inform the rule if the app contains another valid certificate of a certain type)
+
+Together with this new business rule format we will also provide open source libraries for iOS and Android that can be used to evaluate any given certificate based on this new format. The libraries (as well as the format itself) will of course be fully documented and provide with an extensive unit test suite to enable validation of the format and libraries and to also provide a template to port the implementation to new platforms and languages.
+
 ## Details on trust lists/business rules/value sets
 
  - **Austrian acceptance system for testing**:
