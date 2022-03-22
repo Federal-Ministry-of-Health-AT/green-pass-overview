@@ -10,7 +10,8 @@ Versions
 | 05.08.2021 | Fixed links to greencheck.gv.at and test-systems, thx to Mathias Panzenböck |
 | 19.08.2021 | Added information on national business rules |
 | 06.10.2021 | Added information for Viennese business rules |
-| 16.11.2021 | Added information for AT business rules and Engine "AT-METADATA"|
+| 16.11.2021 | Added information for AT business rules and Engine "AT-METADATA" |
+| 22.03.2022 | Added information about Introduction of Simple Business Rule Format |
 
 # General information
 The following leads provided the entry points for the relevant EU repositories, which contain code and information.
