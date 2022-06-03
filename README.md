@@ -12,7 +12,7 @@ Versions
 | 06.10.2021 | Added information for Viennese business rules |
 | 16.11.2021 | Added information for AT business rules and Engine "AT-METADATA" |
 | 22.03.2022 | Added information about Introduction of Simple Business Rule Format |
-| 03.06.2022 | Updated the Certificates used to signed the downloadable structures |
+| 03.06.2022 | Updated the Certificates used to sign the downloadable structures |
 
 # General information
 The following leads provided the entry points for the relevant EU repositories, which contain code and information.
