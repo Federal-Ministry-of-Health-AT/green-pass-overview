@@ -12,6 +12,7 @@ Versions
 | 06.10.2021 | Added information for Viennese business rules |
 | 16.11.2021 | Added information for AT business rules and Engine "AT-METADATA" |
 | 22.03.2022 | Added information about Introduction of Simple Business Rule Format |
+| 03.06.2022 | Updated the Certificates used to signed the downloadable structures |
 
 # General information
 The following leads provided the entry points for the relevant EU repositories, which contain code and information.
@@ -70,7 +71,7 @@ Detailed information on rules engines and test data:
 	 - Android implementation in Kotlin: https://github.com/eu-digital-green-certificates/dgc-certlogic-android
  - To check all rules in the testdata repository automatically against different DCC payloads, use https://dcc-crosscheck.vercel.app/
 
-## NEWS (22.3.2022) Introduction of Simple Business Rule Format
+## Introduction of Simple Business Rule Format
 In the current format, there is a separate complex business rule for each condition, federal state and region, which results in an enormous overhead, as information is often redundant. This makes it extremely costly to maintain the current business rules and also limits the extensibility for new areas (like 1G, 2G, Work, Theater, etc) as the result data file would simply grow very large.
 
 That's why we will introduce a new simplified business rule format soon that eliminates all of these shortcomings. This new format aims to offer the following benefits:
@@ -117,17 +118,17 @@ Signature certificates which are used to signed the structures (required for val
 **Acceptance system** (lists hosted on https://dgc-trusttest.qr.gv.at)
 ```
 -----BEGIN CERTIFICATE-----
-MIIB6zCCAZGgAwIBAgIKAXmEuohlRbR2qzAKBggqhkjOPQQDAjBQMQswCQYDVQQG
-EwJBVDEPMA0GA1UECgwGQk1TR1BLMQowCAYDVQQLDAFRMQwwCgYDVQQFEwMwMDEx
-FjAUBgNVBAMMDUFUIERHQyBDU0NBIDEwHhcNMjEwNTE5MTMwNDQ3WhcNMjIwNjE5
-MTMwNDQ3WjBRMQswCQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQowCAYDVQQL
-DAFRMQ8wDQYDVQQFEwYwMDEwMDExFDASBgNVBAMMC0FUIERHQyBUTCAxMFkwEwYH
+MIIB6zCCAZGgAwIBAgIKAYDM2HHZBVwwtTAKBggqhkjOPQQDAjBQMQswCQYDVQQG
+EwJBVDEPMA0GA1UECgwGQk1TR1BLMQowCAYDVQQLDAFRMQwwCgYDVQQFEwMwMDIx
+FjAUBgNVBAMMDUFUIERHQyBDU0NBIDIwHhcNMjIwNTE2MTIyOTM4WhcNMjMwNjE2
+MTIyOTM4WjBRMQswCQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQowCAYDVQQL
+DAFRMQ8wDQYDVQQFEwYwMDIwMDIxFDASBgNVBAMMC0FUIERHQyBUTCAyMFkwEwYH
 KoZIzj0CAQYIKoZIzj0DAQcDQgAE29KpT1eIKsy5Jx3J0xpPLW+fEBF7ma9943/j
 4Z+o1TytLVok9cWjsdasWCS/zcRyAh7HBL+oyMWdFBOWENCQ76NSMFAwDgYDVR0P
 AQH/BAQDAgeAMB0GA1UdDgQWBBQYmsL5sXTdMCyW4UtP5BMxq+UAVzAfBgNVHSME
-GDAWgBR2sKi2xkUpGC1Cr5ehwL0hniIsJzAKBggqhkjOPQQDAgNIADBFAiBse17k
-F5F43q9mRGettRDLprASrxsDO9XxUUp3ObjcWQIhALfUWnserGEPiD7Pa25tg9lj
-wkrqDrMdZHZ39qb+Jf/E
+GDAWgBRsSZFrO9SANI2CSK201pEayDltvTAKBggqhkjOPQQDAgNIADBFAiBToWg7
+aGFDKcahC/dT/y5Fq1AQjQ0MyR5eZfydwzayNAIhAJwIWbWaF8bz6nIkoRrVgdf1
+rgURIBDJ4WO02mZCVfLu
 -----END CERTIFICATE-----
 ```
 
@@ -135,16 +136,16 @@ wkrqDrMdZHZ39qb+Jf/E
 
 ```
 -----BEGIN CERTIFICATE-----
-MIIB1DCCAXmgAwIBAgIKAXnM+Z3eG2QgVzAKBggqhkjOPQQDAjBEMQswCQYDVQQG
-EwJBVDEPMA0GA1UECgwGQk1TR1BLMQwwCgYDVQQFEwMwMDExFjAUBgNVBAMMDUFU
-IERHQyBDU0NBIDEwHhcNMjEwNjAyMTM0NjIxWhcNMjIwNzAyMTM0NjIxWjBFMQsw
-CQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQ8wDQYDVQQFEwYwMDEwMDExFDAS
-BgNVBAMMC0FUIERHQyBUTCAxMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEl2tm
+MIIB1DCCAXmgAwIBAgIKAYDcOWBmNxlPgDAKBggqhkjOPQQDAjBEMQswCQYDVQQG
+EwJBVDEPMA0GA1UECgwGQk1TR1BLMQwwCgYDVQQFEwMwMDIxFjAUBgNVBAMMDUFU
+IERHQyBDU0NBIDIwHhcNMjIwNTE5MTIwOTQ5WhcNMjMwNjE5MTIwOTQ5WjBFMQsw
+CQYDVQQGEwJBVDEPMA0GA1UECgwGQk1TR1BLMQ8wDQYDVQQFEwYwMDIwMDIxFDAS
+BgNVBAMMC0FUIERHQyBUTCAyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEl2tm
 d16CBHXwcBN0r1Uy+CmNW/b2V0BNP85y5N3JZeo/8l9ey/jIe5mol9fFcGTk9bCk
 8zphVo0SreHa5aWrQKNSMFAwDgYDVR0PAQH/BAQDAgeAMB0GA1UdDgQWBBRTwp6d
-cDGcPUB6IwdDja/a3ncM0TAfBgNVHSMEGDAWgBQfIqwcZRYptMGYs2Nvv90Jnbt7
-ezAKBggqhkjOPQQDAgNJADBGAiEAlR0x3CRuQV/zwHTd2R9WNqZMabXv5XqwHt72
-qtgnjRgCIQCZHIHbCvlgg5uL8ZJQzAxLavqF2w6uUxYVrvYDj2Cqjw==
+cDGcPUB6IwdDja/a3ncM0TAfBgNVHSMEGDAWgBQvWRbxO3tS9HatiMTvp8sD9Rwy
+wTAKBggqhkjOPQQDAgNJADBGAiEAleZ8CcLG4FK4kty+sN0APZmT6LfEE2kzznyV
+yEepU0gCIQCGaqJpOwPXBmgoOsehnJkA0+TZX8V2p1Bg/nqnuYqXFg==
 -----END CERTIFICATE-----
 ```
 
