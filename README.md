@@ -13,6 +13,7 @@ Versions
 | 16.11.2021 | Added information for AT business rules and Engine "AT-METADATA" |
 | 22.03.2022 | Added information about Introduction of Simple Business Rule Format |
 | 03.06.2022 | Updated the Certificates used to sign the downloadable structures |
+| 07.12.2022 | Added information about Introduction of New Business Rule Format (and removed the Simple Business Rule Format) |
 
 # General information
 The following leads provided the entry points for the relevant EU repositories, which contain code and information.
@@ -70,23 +71,6 @@ Detailed information on rules engines and test data:
 	 - iOS implementation: https://github.com/eu-digital-green-certificates/dgc-certlogic-ios
 	 - Android implementation in Kotlin: https://github.com/eu-digital-green-certificates/dgc-certlogic-android
  - To check all rules in the testdata repository automatically against different DCC payloads, use https://dcc-crosscheck.vercel.app/
-
-## Introduction of Simple Business Rule Format
-In the current format, there is a separate complex business rule for each condition, federal state and region, which results in an enormous overhead, as information is often redundant. This makes it extremely costly to maintain the current business rules and also limits the extensibility for new areas (like 1G, 2G, Work, Theater, etc) as the result data file would simply grow very large.
-
-That's why we will introduce a new simplified business rule format soon that eliminates all of these shortcomings. This new format aims to offer the following benefits:
-
-- A single file that contains all national rules
-- A very concise and space-saving format to define rules (the current payload with rules for Entry and Club in all Austrian federal states consists of 390 individual rules resulting in ca. 500KB while the payload in the new format for 8 regions is ca. 15KB and less than 900 easily-readable lines)
-- Reusability of JSONLogic conditions to define conditions that can be applied to certificate
-- Support for a flexible definition of "profiles" - e.g. Entry, Club, Work, 1G, 2G, 2G+, etc
-- Easy inclusion or exclusion of federal states (= regions in the format) to apply the same ruleset to multiple federal states
-- Simply reuse of rulesets from another profile to avoid redefining the same conditions multiple times (e.g. validity for vaccinations needs to be defined only once and can then be reused for 1G, 2G, 3G, Entry, Club, etc.)
-- Definition of target groups based on conditions (e.g. to define different rules for people of different ages)
-- Validity and Metadata are defined together (instead of different regions in the current format, the new format specifies the validity timerange directly in the rule itself)
-- Support for "external conditions" that can only be evaluated by the containing app (e.g. to support 2G+ where the app might need to inform the rule if the app contains another valid certificate of a certain type)
-
-Together with this new business rule format we will also provide open source libraries for iOS and Android that can be used to evaluate any given certificate based on this new format. The libraries (as well as the format itself) will of course be fully documented and provide with an extensive unit test suite to enable validation of the format and libraries and to also provide a template to port the implementation to new platforms and languages.
 
 ## Details on trust lists/business rules/value sets
 
@@ -247,6 +231,433 @@ ce3306f52665871b69923cd1
   4: 1619961443                           // timestamp, before which the signature is valid
 }
 ```
+
+## New Modern Business Rule Format
+### Motivation
+Due to several reasons we introduce a new format for representing the business rules which determine whether a green pass certificate is valid or not:
+
+-   Readability and Maintainability of the "old" (current) EU format is extremely difficult and prone to errors, because
+    -   for each federal state and each profile (currently Entry and Night Club) dozens of files with only minimal differences need to be maintained
+    -   the actual rules are split across multiple files
+    -   the actual evaluation rules (in JSONLogic) need to be redefined in each file again which is highly prone to errors
+-   The current format is highly inefficient. As of May 2022 the business rules in the old format are about 640 KB even though there are almost no restrictions in place and the new format requires less than 30KB for the same rules.
+-   The current format is not very flexible. Each new profile (e.g. Theater, 2G, Workplace, etc) means copying hundreds of files and applying only minimal changes.
+-   The metadata (until when is a certificate valid) is completely separate from the actual rules in the current format.
+### Features of the new format
+The new format offers several features and improvements which lead to a much simpler maintenance and greatly improved readability:
+
+-   Flexible definition of profiles (Entry, Night Club)
+-   Predefinition and Reuse of JSON Logic Conditions
+-   Easy definition for which federal states a rules is applicable (through white and blacklisting)
+-   Reuse of a complete set of rules (if the same rules apply to multiple profiles, the rules have to be defined only once)
+-   Defintion of groups (e.g. separate by age)
+-   Definition of metadata (valid from/until) directly within the rules
+-   Support for extermal Conditions (Preparation to include other certificates to determine the validity of a certificate)
+### URLs
+-   **Austrian acceptance system for testing**:
+    -   **Content**: [https://dgc-trusttest.qr.gv.at/extendedrulesbin](https://dgc-trusttest.qr.gv.at/extendedrulesbin)
+    -   **Signature**: [https://dgc-trusttest.qr.gv.at/extendedrulessig](https://dgc-trusttest.qr.gv.at/extendedrulessig)
+-   **Austrian productive system**:
+    -   **Content**: [https://dgc-trust.qr.gv.at/extendedrulesbin](https://dgc-trust.qr.gv.at/extendedrulesbin)
+    -   **Signature**: [https://dgc-trust.qr.gv.at/extendedrulessig](https://dgc-trust.qr.gv.at/extendedrulessig)
+## Current Example
+[Attached](new_business_rules_11052022.json) is the file in the new business rule format which represents the valid rules for Entry and Night Club as of May 11, 2022.
+## Payload
+
+### Full Payload
+```
+{
+  "profiles": [
+    { profile payload }
+  ],
+  "conditions": {
+    "condition": {
+      condition payload
+    }
+  }
+  "rules" [
+    { rule payload }
+  ]
+}
+```
+### Profile Payload
+```
+{
+  "id": string,
+  "name": {
+    "de": string,
+    "en": string
+  },
+  "links": {
+    "W": string,
+    "all": string,
+  }
+}
+```
+### Condition Payload
+```
+{
+  "logic": "json logic string",
+  "violation_description": {
+    "de": string,
+    "en": string
+  }
+}
+```
+### Rule Payload
+```
+{
+  "id": string,
+  "schema_version": number,
+  "regions": {
+    "include": [ list of region strings ]
+    "exclude": [ list of region strings ]
+  },
+  "valid_from": timestamp string,
+  "valid_until": timestamp string,
+  "certificate_type": "vaccination|test|recovery|vaccination_exemption",
+  "certificate_type_conditions": [
+    list of condition names - linked with AND
+  ],
+  "general_conditions": [
+    list of condition names - linked with AND
+  ],
+  "groups": {
+    "group_name": [
+      [
+        first list of condition names - linked with AND
+      ],
+      [
+        second list of condition names - linked with AND - linked to first list with OR
+      ]
+    ]
+  },
+  "profiles": {
+    "profile_id" {
+      "all|group_name": {
+        "conditions": [
+          [
+            first list of condition names - linked with AND
+          ],
+          [
+            second list of condition names - linked with AND - linked to first list with OR
+          ]
+        ],
+        "valid_from": [
+          {
+            validity payload
+          },
+          {
+            validity payload
+          }
+        ]
+         "valid_until": [
+          {
+            validity payload
+          },
+          {
+            validity payload
+          }
+        ],
+        "invalid": boolean,
+        "equal_to_profile": profile name,
+        "linked_conditions": [
+          {
+            "violation_description": {
+              "de": string,
+              "en": string
+            }
+            "conditions": [
+              list of condition names - linked with AND
+            ]
+          },
+          {
+             "violation_description": {
+              "de": string,
+              "en": string
+            }
+            "conditions": [
+              list of condition names - linked with AND
+            ]
+           }
+        ]
+      }
+    }
+  }
+}
+```
+### Validity Payload
+```
+{
+  "value": "placeholder from certificate value"
+  "plus_unit": "minute|hour|day|month",
+  "plus_value": number,
+  "format": "date|dateTime",
+  "max": timestamp string,
+  "conditions": [
+    [
+      first list of condition names - linked with AND
+    ],
+    [
+      second list of condition names - linked with AND - linked to first list with OR
+    ]
+  ],
+  "modifier": "startOfDay|endOfDay|startOfMonth|endOfMonth"
+}
+```
+## Field / Payload Descriptions
+### profiles
+
+List of "profiles". A profile defines an area that defines a separate set of rules for the validity of certificates. This can be either a G-rule (e.g., 1G, 2G, 3G) or a certain physical area (e.g. restaurant, theater, night club).
+
+### Profile Payload
+```
+{
+  "id": string,
+  "name": {
+    "de": string,
+    "en": string
+  },
+  "links": {
+    "W": string,
+    "all": string,
+  }
+}
+```
+-   id (mandatory): unique key for this profile
+-   name (mandatory): Display name for the profile. Germand and Englisch localization are defined in the subelements de and en.
+-   links (optional): links for additional information about the profile. Specific links for individual federal states can also be defined, and a fallback for "all" should be definied in all cases if a link is desired.
+
+Here is a sample for two profiles Entry and Night Club:
+```
+{
+  "profiles": [
+    {
+      "id": "Entry",
+      "name": {
+        "de": "Eintritt",
+        "en": "Entry"
+      },
+      "links": {
+        "W": "https://coronavirus.wien.gv.at/oeffentliches-leben/",
+        "all": "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Coronavirus---Aktuelle-Maßnahmen.html"
+      }
+    },
+    {
+      "id": "NightClub",
+      "name": {
+        "de": "Nachtgastronomie",
+        "en": "Night Club"
+      },
+      "links": {
+        "W": "https://coronavirus.wien.gv.at/oeffentliches-leben/",
+        "NOE": "https://www.noe.gv.at/noe/Coronavirus/Aktuelle_Massnahmen.html",
+        "all": "https://www.sozialministerium.at/Informationen-zum-Coronavirus/Coronavirus---Aktuelle-Maßnahmen.html"
+      }
+    }
+  ]
+}
+```
+### conditions
+
+A map with JSONLogic conditions. The keys are identifiers for the conditions which can then be used in the rules later on.
+```
+{
+  "logic": "json logic string",
+  "violation_description": {
+    "de": string,
+    "en": string
+  }
+}
+```
+-   violation_description (optional): An error text that can be used when this condition is violated for a certificate. German and Englisch localizations are defined in the subelements de and en.
+-   logic (mandatory): JSONLogic condition as string (including the proper string escapes). The condition has to return a boolean value if this condition is valid for a certificate or not. In the old/current business rule format this is the full content of the field "Logic" (converted to a string with proper escapes".
+
+Here is a sample rule that checks if the test result of a test certificate is negative:
+```
+{
+  "conditions": {
+    "isNegativeTestResult": {
+      "violation_description": {
+        "de": "Testresultat ist positiv",
+        "en": "Test result is positive"
+      },
+      "logic": "{\"if\":[{\"var\":\"payload.t.0\"},{\"===\":[{\"var\":\"payload.t.0.tr\"},\"260415000\"]},true,false]}"
+    }
+  }
+}
+```
+### rules
+
+List of individual rules. All rules that apply to a given certificate based on the certificate_type will be evaluated. For each certificate and federal state only a single rule should apply and the individual should not overlap. This has to be kept in mind by the creator of the rules!
+
+-   id: An internal ID for this rule
+-   schema_version: Schema-Version of this rule. Can be used to determine if a given rule can be evaluated at all if changes to the structure or external rules are introduced at a later point in time.
+-   federal_states: Defines for which federal states this rule applies.
+-   certificate_type: The type of certificate for which this rule applies. Can be one of the following values: test, vaccination, recovery oder vaccination_exemption.
+-   certificate_type_conditions: A list of conditions (combined with AND) to check if a rule is relevant for a given certificate. E.g. is a vaccination certificate, contains only one certificate.
+-   valid_from: ISO-Date (zB "2021-01-01T22:00:00Z") from which point in time the rule is valid. If the field is not defined, there is no check for the valid_from date and the rule is valid from long ago.
+-   valid_until: ISO-Date (zB "2021-01-01T22:00:00Z") until when this rule is valid. If the field is not defined, there is no check for the valid_until date and the rule is valid until forever.
+-   general_conditions: A list of conditions combined with AND which all must be evaluated to true for the certificate to be valid. E.g. is an accepted vaccine, the vaccination date is after the validation time, the certificate is no revoked certificate.
+-   groups: A map to define distinct groups for which different individual rules apply. These groups can then be used in the conditions for the individual profiles. If no groups are defined an automatic group named "all" is defined and used for this rule. If the definition of the groups does not lead to distinct groups it is undefined which group a given certificate is assigned to.
+-   profiles: A map of individual conditions for a single profile. The key is the id of the individual profile.
+
+### rules → federal_states
+
+-   include: A list of short identifiers for federal states for which this rule applies.
+-   exclude: A list of short identifiers for federal states, for which this rule does not apply. This list has a higher priority than the include list.
+
+Possible short identifiers for federal states are:
+
+-   **BGLD** for Burgendland
+-   **KTN** for Kärnten
+-   **NOE** for Niederösterreich
+-   **OOE** for Oberösterreich
+-   **SBG** for Salzburg
+-   **STMK** for Steiermark
+-   **T** for Tirol
+-   **VBG** for Vorarlberg
+-   **W** for Wien
+-   **all** for all federal states
+
+### rules → groups
+
+Defines groups by specifying a list of conditions. For each group you can define a list of lists of conditions. The conditions in the inner list are combined with AND, while the individual lists are combined with OR.
+
+The following shows the definition of two groups - for people under and over 18, including the required conditions to check for the age.
+```
+{
+  "profiles": [
+    {
+      "id": "Entry"
+    },
+    {
+      "id": "NightClub"
+    }
+  ],
+  "conditions": {
+    "isYoungerThan18Years": {
+      "logic": "{\"if\":[{\"after\":[{\"plusTime\":[{\"var\":\"payload.dob\"},18,\"year\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},true,false]}"
+    },
+    "isOlderThan18Years": {
+      "logic": "{\"if\":[{\"not-after\":[{\"plusTime\":[{\"var\":\"payload.dob\"},18,\"year\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},true,false]}"
+    }
+  },
+  "rules": [
+    {
+      "id": "rule-1",
+      "groups": {
+        "ageUpTo18": [
+          [
+            "isYoungerThan18Years"
+          ]
+        ],
+        "age18AndOlder": [
+          [
+            "isOlderThan18Years"
+          ]
+        ]
+      },
+      "profiles": {
+        "Entry": {
+          "ageUpTo18": {
+          },
+          "age18AndOlder": {
+          }
+        },
+        "NightClub": {
+          "ageUpTo18": {
+            "equal_to_profile": "Entry"
+          },
+          "age18AndOlder": {
+            "equal_to_profile": "Entry"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+If groups are defined for any given rule, the groups must then also be used when defining the rules for the profiles. A mixture of using the implicit group "all" and defined groups is not possible.
+
+Additionally when using the equal_to_profile field to reference and reuse the rules of a different profile, all groups must be used and defined for that profile as well (see Night Club in the sample above).
+
+### rules → profiles (einzelner Eintrag)
+
+Defines the conditions and validity for certificate in a profile. Each entry is a map with keys for the individual groups (either "all" if no groups are defined or each individual group)
+-   invalid: Can be set to true if the evaluated certificate is invalid for this profile/group.
+-   valid_from: See detailed description rules -> profiles -> details -> valid_from/_until
+-   valid_until: See detailed description unter rules -> profiles -> details -> valid_from/_until
+-   equal_to_profile: Can be used if this profile equals another profile (in this rule!). The rules for the referenced profile must have the same structure, e.g. they must also define the same groups. If any of the other fields are defined in addition to this one, those fields overwrite the values defined in the referenced profile.
+-   linked_conditions: A list of external conditions which can only be evaluated by the containing application. This can be used to define dependencies between certificates, like certificate A is only valid if the user has a a valid certificate B for this profile. See external conditions for a detailed description of conditions that the app can support at the moment. The evaluated conditions (matching and failed) are explicitly provided when evaluating so that the app can provide special functionality to e.g. link to another certificate.
+-   conditions: The conditions for this profile. Defined as a list of lists of conditions. The conditions in the inner list are combined with AND, while the individual lists are combined with OR.
+
+The conditions are defined on two levels to support AND as well as OR combinations of conditions. The first level is used for combining groups of conditions with OR (= one of the groups of conditions has to evaluate to true). The second level contains names/keys of conditions which are defined at the root level of the new business rule format under conditions. The conditions on this second level are combined with AND (= all the conditions have to evaluate to true)
+
+Following is a sample of the technical representation and a plain-text description afterwards:
+```
+"conditions": [
+  [
+    "bedingung_eins",
+    "bedingung_zwei"
+  ],
+  [
+    "bedingung_drei",
+    "bedingung_vier",
+    "bedingung_fuenf"
+  ]
+]
+```
+This entry is used when either bedingung_eins and bedingung_zwei are evaluted to true OR if bedingung_drei and bedingung_vier and bedingung_fuenf are evaluated to true.
+
+### rules → profiles → details → valid_from / valid_until
+
+The valid_from and valid_until block for a profile define the validity to display to the user. It is possible to define multiple validity payload for valid_until and valid_from which contain different conditions. When evaluating the rules, all the validities are evaluated and return to the application and the application needs to determine which is the correct one.
+```
+{
+  "value": "iso date or placeholder from certificate value"
+  "plus_unit": "minute|hour|day|month",
+  "plus_value": number,
+  "format": "date|dateTime",
+  "max": timestamp string,
+  "conditions": [
+    [
+      first list of condition names - linked with AND
+    ],
+    [
+      second list of condition names - linked with AND - linked to first list with OR
+    ]
+  ],
+  "modifier": "startOfDay|endOfDay|startOfMonth|endOfMonth"
+}
+```
+-   value (mandatory): Either an ISO-Date (eg "2021-01-01T22:00:00Z") or a placeholder referencing a value from the certificate. The placeholder has to be surrounding by #, e.g. #payload.v.0.dt# for the date of vaccination or e.g. #[payload.t.0.sc#](http://payload.t.0.sc) for the date of sample collection of a test.
+-   plus_unit (optional): A time unit - plus_unit * plus_interval will be added to the value. Optional and can be omitted. Possible values are minute, hour, day, month
+-   plus_interval (optional): A number value - plus_unit * plus_interval will be added to the value. Optional and can be omitted.
+-   max (optional): An ISO-Date (eg "2021-01-01T22:00:00Z"), which will be used as the maximum date for the validity, even if the value of + plus_unit * plus_interval results in a later date.
+-   format (optional): An optional format who the resolved date should be formatted. (date when formatting which only day, month, year or dateTime when formatting with date including hour and day).
+-   modifier (optional): Optional Modifier to modify the resolved date.
+-   conditions (optional): A list of conditions that have to resolve to true for this entry to be used and returned. If conditions are empty or omitted, the entry always applies or can be used as a fallback.
+
+  
+
+The conditions are defined on two levels to support AND as well as OR combinations of conditions. The first level is used for combining groups of conditions with OR (= one of the groups of conditions has to evaluate to true). The second level contains names/keys of conditions which are defined at the root level of the new business rule format under conditions. The conditions on this second level are combined with AND (= all the conditions have to evaluate to true)
+
+Following is a sample of the technical representation and a plain-text description afterwards:
+```
+"conditions": [
+  [
+    "bedingung_eins",
+    "bedingung_zwei"
+  ],
+  [
+    "bedingung_drei",
+    "bedingung_vier",
+    "bedingung_fuenf"
+  ]
+]
+```
+This entry is used when either bedingung_eins and bedingung_zwei are evaluted to true OR if bedingung_drei and bedingung_vier and bedingung_fuenf are evaluated to true.
 
 # Additional links (demo, demo-apps)
 * **Demo Service, that generates test codes (based on the Kotlin creation core)**: https://dgc.a-sit.at/ehn/

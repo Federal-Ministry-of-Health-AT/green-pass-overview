@@ -1,0 +1,601 @@
+{
+    "profiles": [
+        {
+            "id": "Entry",
+            "name": {
+                "de": "Eintritt",
+                "en": "Entry"
+            }
+        },
+        {
+            "id": "NightClub",
+            "name": {
+                "de": "Nachtgastronomie",
+                "en": "Night Club"
+            }
+        }
+    ],
+    "conditions": {
+        "isRecoveryTargetingCovid19": {
+            "logic": "{\"if\":[{\"var\":\"payload.r.0\"},{\"in\":[{\"var\":\"payload.r.0.tg\"},{\"var\":\"external.valueSets.disease-agent-targeted\"}]},true,false]}"
+        },
+        "isVaccinationTargetingCovid19": {
+            "logic": "{\"if\":[{\"var\":\"payload.v.0\"},{\"in\":[{\"var\":\"payload.v.0.tg\"},{\"var\":\"external.valueSets.disease-agent-targeted\"}]},true,false]}"
+        },
+        "isVaccinationExemptionTargetingCovid19": {
+            "logic": "{\"if\":[{\"var\":\"payload.ve.0\"},{\"in\":[{\"var\":\"payload.ve.0.tg\"},{\"var\":\"external.valueSets.disease-agent-targeted\"}]},true,false]}"
+        },
+        "isTestTargetingCovid19": {
+            "logic": "{\"if\":[{\"var\":\"payload.t.0\"},{\"in\":[{\"var\":\"payload.t.0.tg\"},{\"var\":\"external.valueSets.disease-agent-targeted\"}]},true,false]}"
+        },
+        "isPCRTest": {
+            "logic": "{\"if\":[{\"var\":\"payload.t.0\"},{\"in\":[{\"var\":\"payload.t.0.tt\"},[\"LP6464-4\"]]},true,false]}"
+        },
+        "isRATTest": {
+            "logic": "{\"if\":[{\"var\":\"payload.t.0\"},{\"in\":[{\"var\":\"payload.t.0.tt\"},[\"LP217198-3\"]]},true,false]}"
+        },
+        "isRecoveryMoreThan11DaysAgo": {
+            "logic": "{\"if\":[{\"var\":\"payload.r.0\"},{\"not-before\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.r.0.fr\"},11,\"day\"]}]},true,false]}"
+        },
+        "isRecoveryLessThan180DaysAgo": {
+            "logic": "{\"if\":[{\"var\":\"payload.r.0\"},{\"not-after\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.r.0.fr\"},180,\"day\"]}]},true,false]}"
+        },
+        "isNegativeTestResult": {
+            "violation_description": {
+                "de": "Testresultat ist positiv",
+                "en": "Test result is positive"
+            },
+            "logic": "{\"if\":[{\"var\":\"payload.t.0\"},{\"===\":[{\"var\":\"payload.t.0.tr\"},\"260415000\"]},true,false]}"
+        },
+        "isSampleCollectionLessThan24HoursAgo": {
+            "violation_description": {
+                "de": "Probenentnahme war vor mehr als 24 Stunden",
+                "en": "Sample Collection was more than 24 hours ago"
+            },
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.t.0.sc\"},24,\"hour\"]}]},true,false]}"
+        },
+        "isSampleCollectionLessThan48HoursAgo": {
+            "violation_description": {
+                "de": "Probenentnahme war vor mehr als 48 Stunden",
+                "en": "Sample Collection was more than 48 hours ago"
+            },
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.t.0.sc\"},48,\"hour\"]}]},true,false]}"
+        },
+        "isSampleCollectionLessThan72HoursAgo": {
+            "violation_description": {
+                "de": "Probenentnahme war vor mehr als 72 Stunden",
+                "en": "Sample Collection was more than 72 hours ago"
+            },
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.t.0.sc\"},72,\"hour\"]}]},true,false]}"
+        },
+        "isAllowedVaccine": {
+            "violation_description": {
+                "de": "Impfstoff ist nicht anerkannt",
+                "en": "Type of Vaccination is not accepted"
+            },
+            "logic": "{\"if\":[{\"var\":\"payload.v.0\"},{\"in\":[{\"var\":\"payload.v.0.mp\"},[\"EU\/1\/20\/1528\",\"EU\/1\/20\/1507\",\"EU\/1\/21\/1529\",\"EU\/1\/20\/1525\",\"EU\/1\/21\/1618\"]]},true,false]}"
+        },
+        "isFullVaccination": {
+            "violation_description": {
+                "de": "Teilimpfungen sind nicht anerkannt",
+                "en": "Partial vaccinations are not accepted"
+            },
+            "logic": "{\"if\":[{\"<\":[{\"var\":\"payload.v.0.dn\"},{\"var\":\"payload.v.0.sd\"}]},false,true]}"
+        },
+        "isNoRevokedCertificateIdentifier": {
+            "violation_description": {
+                "de": "Dieses Zertifikat ist gesperrt",
+                "en": "This certificate was revoked"
+            },
+            "logic": "{\"if\":[{\"in\":[{\"var\":\"payload.v.0.ci\"},[\"UVCI:01DE/IZ14482A/2BYU1VFE8L2JDQJHY1QVSK#E\",\"UVCI:01:PL:1/2A992C33754A4D379A7F61089485BB75\",\"URN:UVCI:01:FR:W7V2BE46QSBJ#L\",\"URN:UVCI:01:FR:T5DWTJYS4ZR8#4\",\"URN:UVCI:01DE/A80013335/TCXSI5Q08B0DIJGMIZJDF#T\",\"URN:UVCI:01:PL:1/AF2AA5873FAF45DFA826B8A01237BDC4\"]]},false,true]}"
+        },
+        "isNoJohnsonSingleShot": {
+            "violation_description": {
+                "de": "Erstimpfungen mit Johnson & Johnson sind seit 3.1.2021 nicht mehr anerkannt.",
+                "en": "First vaccinations with Johnson & Johnson are not accepted anymore since 3.1.2021"
+            },
+            "logic": "{\"if\":[{\"and\":[{\"in\":[{\"var\":\"payload.v.0.mp\"},[\"EU\/1\/20\/1525\"]]},{\"===\":[{\"var\":\"payload.v.0.dn\"},1]}]},false,true]}"
+        },
+        "isVaccinationDateBeforeValidationClock": {
+            "violation_description": {
+                "de": "Impfdatum liegt in der Zukunft",
+                "en": "Vaccination date is in the future"
+            },
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"payload.v.0.dt\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},true,false]}"
+        },
+        "isVaccinationDateLessThan180DaysAgo": {
+            "violation_description": {
+                "de": "Impfdatum war vor mehr als 180 Tagen",
+                "en": "Vaccination date was more than 180 days ago"
+            },
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.v.0.dt\"},180,\"day\"]}]},true,false]}"
+        },
+        "isVaccinationDateLessThan210DaysAgo": {
+            "violation_description": {
+                "de": "Impfdatum war vor mehr als 210 Tagen",
+                "en": "Vaccination date was more than 210 days ago"
+            },
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.v.0.dt\"},210,\"day\"]}]},true,false]}"
+        },
+        "isVaccinationDateLessThan270DaysAgo": {
+            "violation_description": {
+                "de": "Impfdatum war vor mehr als 270 Tagen",
+                "en": "Vaccination date was more than 270 days ago"
+            },
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.v.0.dt\"},270,\"day\"]}]},true,false]}"
+        },
+        "isVaccinationDateLessThan360DaysAgo": {
+            "violation_description": {
+                "de": "Impfdatum war vor mehr als 360 Tagen",
+                "en": "Vaccination date was more than 360 days ago"
+            },
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.v.0.dt\"},360,\"day\"]}]},true,false]}"
+        },
+        "isVaccinationDateLessThan365DaysAgo": {
+            "violation_description": {
+                "de": "Impfdatum war vor mehr als 365 Tagen",
+                "en": "Vaccination date was more than 365 days ago"
+            },
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"payload.v.0.dt\"},365,\"day\"]}]},true,false]}"
+        },
+        "isAgeMoreThan72Months": {
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"payload.dob\"},72,\"month\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},true,false]}"
+        },
+        "isAgeLessThan147Months": {
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"payload.dob\"},147,\"month\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},false,true]}"
+        },
+        "isAgeMoreThan147Months": {
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"payload.dob\"},147,\"month\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},true,false]}"
+        },
+        "isBirthdayAfterSchoolEntry": {
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"payload.dob\"},0,\"day\"]},{\"plusTime\":[\"2006-09-01T00:00:00Z\",0,\"day\"]}]},false,true]}"
+        },
+        "isBirthdayBeforeSchoolEntry": {
+            "logic": "{\"if\":[{\"before\":[{\"plusTime\":[{\"var\":\"payload.dob\"},0,\"day\"]},{\"plusTime\":[\"2006-09-01T00:00:00Z\",0,\"day\"]}]},true,false]}"
+        },
+        "containsOneVaccinationCertificate": {
+            "logic": "{\"if\":[{\"===\":[{\"reduce\":[[{\"var\":\"payload.v\"}],{\"+\":[{\"var\":\"accumulator\"},{\"if\":[{\"var\":\"current.0\"},1,0]}]},0]},1]},true,false]}"
+        },
+        "containsOneRecoveryCertificate": {
+            "logic": "{\"if\":[{\"===\":[{\"reduce\":[[{\"var\":\"payload.r\"}],{\"+\":[{\"var\":\"accumulator\"},{\"if\":[{\"var\":\"current.0\"},1,0]}]},0]},1]},true,false]}"
+        },
+        "containsOneTestCertificate": {
+            "logic": "{\"if\":[{\"===\":[{\"reduce\":[[{\"var\":\"payload.t\"}],{\"+\":[{\"var\":\"accumulator\"},{\"if\":[{\"var\":\"current.0\"},1,0]}]},0]},1]},true,false]}"
+        },
+        "containsOneVaccinationExemptionCertificate": {
+            "logic": "{\"if\":[{\"===\":[{\"reduce\":[[{\"var\":\"payload.ve\"}],{\"+\":[{\"var\":\"accumulator\"},{\"if\":[{\"var\":\"current.0\"},1,0]}]},0]},1]},true,false]}"
+        },
+        "containsExactlyOneCertificate": {
+            "logic": "{\"===\":[{\"reduce\":[[{\"var\":\"payload.r\"},{\"var\":\"payload.t\"},{\"var\":\"payload.v\"},{\"var\":\"payload.ve\"}],{\"+\":[{\"var\":\"accumulator\"},{\"if\":[{\"var\":\"current.0\"},1,0]}]},0]},1]}"
+        },
+        "isSecondJohnsonShot": {
+            "logic": "{\"if\":[{\"and\":[{\"in\":[{\"var\":\"payload.v.0.mp\"},[\"EU/1/20/1525\"]]},{\">=\":[{\"var\":\"payload.v.0.dn\"},{\"var\":\"payload.v.0.sd\"}]},{\"===\":[{\"var\":\"payload.v.0.dn\"},2]}]},true,false]}"
+        },
+        "isSecondVaccineShot": {
+            "logic": "{\"if\":[{\"and\":[{\">=\":[{\"var\":\"payload.v.0.dn\"},{\"var\":\"payload.v.0.sd\"}]},{\"===\":[{\"var\":\"payload.v.0.dn\"},2]}]},true,false]}"
+        },
+        "isThirdOrLaterVaccineShot": {
+            "logic": "{\"if\":[{\"and\":[{\">=\":[{\"var\":\"payload.v.0.dn\"},{\"var\":\"payload.v.0.sd\"}]},{\">\":[{\"var\":\"payload.v.0.dn\"},2]}]},true,false]}"
+        },
+        "isThirdOrLaterJohnsonShot": {
+            "logic": "{\"if\":[{\"and\":[{\"in\":[{\"var\":\"payload.v.0.mp\"},[\"EU/1/20/1525\"]]},{\">=\":[{\"var\":\"payload.v.0.dn\"},{\"var\":\"payload.v.0.sd\"}]},{\">\":[{\"var\":\"payload.v.0.dn\"},2]}]},true,false]}"
+        },
+        "isFirstVaccineShot": {
+            "logic": "{\"if\":[{\"and\":[{\">=\":[{\"var\":\"payload.v.0.dn\"},{\"var\":\"payload.v.0.sd\"}]},{\"===\":[{\"var\":\"payload.v.0.dn\"},1]}]},true,false]}"
+        },
+        "isUpToSecondNonJohnsonShot": {
+            "logic": "{\"if\":[{\"and\":[{\"in\":[{\"var\":\"payload.v.0.mp\"},[\"EU/1/20/1528\",\"EU/1/20/1507\",\"EU/1/21/1529\",\"EU/1/21/1618\"]]},{\">=\":[{\"var\":\"payload.v.0.dn\"},{\"var\":\"payload.v.0.sd\"}]},{\"<=\":[{\"var\":\"payload.v.0.dn\"},2]}]},true,false]}"
+        },
+        "isUpToSecondVaccineShot": {
+            "logic": "{\"if\":[{\"and\":[{\">=\":[{\"var\":\"payload.v.0.dn\"},{\"var\":\"payload.v.0.sd\"}]},{\"<=\":[{\"var\":\"payload.v.0.dn\"},2]}]},true,false]}"
+        },
+        "isThirdOrLaterNonJohnsonShot": {
+            "logic": "{\"if\":[{\"and\":[{\"in\":[{\"var\":\"payload.v.0.mp\"},[\"EU/1/20/1528\",\"EU/1/20/1507\",\"EU/1/21/1529\",\"EU/1/21/1618\"]]},{\">=\":[{\"var\":\"payload.v.0.dn\"},{\"var\":\"payload.v.0.sd\"}]},{\">\":[{\"var\":\"payload.v.0.dn\"},2]}]},true,false]}"
+        },
+        "isYoungerThan12Years": {
+            "logic": "{\"if\":[{\"after\":[{\"plusTime\":[{\"var\":\"payload.dob\"},12,\"year\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},true,false]}"
+        },
+        "isYoungerThan18Years": {
+            "logic": "{\"if\":[{\"after\":[{\"plusTime\":[{\"var\":\"payload.dob\"},18,\"year\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},true,false]}"
+        },
+        "isOlderThan18Years": {
+            "logic": "{\"if\":[{\"not-after\":[{\"plusTime\":[{\"var\":\"payload.dob\"},18,\"year\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},true,false]}"
+        },
+        "isBetween12And18Years": {
+            "logic": "{\"if\":[{\"and\":[{\"not-after\":[{\"plusTime\":[{\"var\":\"payload.dob\"},12,\"year\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},{\"after\":[{\"plusTime\":[{\"var\":\"payload.dob\"},18,\"year\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]}]},true,false]}"
+        },
+        "isVaccinationExemptionValidUntilAfterValidationClock": {
+            "violation_description": {
+                "de": "Gültig Bis der Impfausnahme in der Zukunft",
+                "en": "Valid Until of Vaccination exemption is in the future"
+            },
+            "logic": "{\"if\":[{\"not-before\":[{\"plusTime\":[{\"var\":\"payload.ve.0.du\"},0,\"day\"]},{\"plusTime\":[{\"var\":\"external.validationClock\"},0,\"day\"]}]},true,false]}"
+        }
+    },
+    "rules": [
+        {
+            "id": "VaccinationExemption",
+            "schema_version": 1,
+            "regions": {
+                "include": ["all"]
+            },
+            "certificate_type": "vaccination_exemption",
+            "certificate_type_conditions": [
+                "containsExactlyOneCertificate",
+                "containsOneVaccinationExemptionCertificate"
+            ],
+            "valid_from": "2021-01-01T22:00:00Z",
+            "valid_until": "2030-06-01T00:00:00Z",
+            "general_conditions": [
+                "isVaccinationExemptionTargetingCovid19",
+                "isNoRevokedCertificateIdentifier"
+            ],
+            "profiles": {
+                "Entry": {
+                    "all": {
+                        "conditions": [
+                            [
+                                "isVaccinationExemptionValidUntilAfterValidationClock"
+                            ]
+                        ],
+                        "valid_until": [
+                            {
+                                "value": "#payload.ve.0.du#",
+                                "format": "date"
+                            }
+                        ]
+                    }
+                },
+                "NightClub": {
+                    "all": {
+                        "equal_to_profile": "Entry"
+                    }
+                }
+            }
+        },
+        {
+            "id": "Vaccination",
+            "schema_version": 1,
+            "regions": {
+                "include": ["all"]
+            },
+            "certificate_type": "vaccination",
+            "certificate_type_conditions": [
+                "containsExactlyOneCertificate",
+                "containsOneVaccinationCertificate"
+            ],
+            "valid_from": "2021-01-01T22:00:00Z",
+            "valid_until": "2030-06-01T00:00:00Z",
+            "general_conditions": [
+                "isVaccinationTargetingCovid19",
+                "isAllowedVaccine",
+                "isNoRevokedCertificateIdentifier",
+                "isVaccinationDateBeforeValidationClock"
+            ],
+            "groups": {
+                "ageUpTo18": [
+                    [
+                        "isYoungerThan18Years"
+                    ]
+                ],
+                "age18AndOlder": [
+                    [
+                        "isOlderThan18Years"
+                    ]
+                ]
+            },
+            "profiles": {
+                "Entry": {
+                    "ageUpTo18": {
+                        "conditions": [   
+                            [
+                                "isNoJohnsonSingleShot",
+                                "isFirstVaccineShot",
+                                "isVaccinationDateLessThan180DaysAgo"
+                            ],
+                            [
+                                "isVaccinationDateLessThan210DaysAgo",
+                                "isSecondVaccineShot"
+                            ],
+                            [
+                                "isVaccinationDateLessThan365DaysAgo",
+                                "isThirdOrLaterVaccineShot"
+                            ]
+                        ],
+                        "valid_from": [
+                            {
+                                "value": "#payload.v.0.dt#",
+                                "format": "date"
+                            }
+                        ],
+                        "valid_until": [
+                            {
+                                "conditions": [
+                                    [
+                                        "isNoJohnsonSingleShot",
+                                        "isFirstVaccineShot"
+                                    ]
+                                ],
+                                "value": "#payload.v.0.dt#",
+                                "plus_unit": "day",
+                                "plus_interval": 180,
+                                "format": "date"
+                            },
+                            {
+                                "conditions": [
+                                    [
+                                        "isSecondVaccineShot"
+                                    ]
+                                ],
+                                "value": "#payload.v.0.dt#",
+                                "plus_unit": "day",
+                                "plus_interval": 210,
+                                "format": "date"
+                            },
+                            {
+                                "conditions": [
+                                    [
+                                        "isThirdOrLaterVaccineShot"
+                                    ]
+                                ],
+                                "value": "#payload.v.0.dt#",
+                                "plus_unit": "day",
+                                "plus_interval": 365,
+                                "format": "date"
+                            }
+                        ]
+                    },
+                    "age18AndOlder": {
+                        "conditions": [
+                            [
+                                "isNoJohnsonSingleShot",
+                                "isUpToSecondVaccineShot",
+                                "isVaccinationDateLessThan180DaysAgo"
+                            ],
+                            [
+                                "isThirdOrLaterVaccineShot",
+                                "isVaccinationDateLessThan365DaysAgo"
+                            ]
+                        ],
+                        "valid_from": [
+                            {
+                                "value": "#payload.v.0.dt#",
+                                "format": "date"
+                            }
+                        ],
+                        "valid_until": [
+                            {
+                                "conditions": [
+                                    [
+                                        "isNoJohnsonSingleShot",
+                                        "isUpToSecondVaccineShot"
+                                    ]
+                                ],
+                                "value": "#payload.v.0.dt#",
+                                "plus_unit": "day",
+                                "plus_interval": 180,
+                                "format": "date"
+                            },
+                            {
+                                "conditions": [
+                                    [
+                                        "isThirdOrLaterVaccineShot"
+                                    ]
+                                ],
+                                "value": "#payload.v.0.dt#",
+                                "plus_unit": "day",
+                                "plus_interval": 365,
+                                "format": "date"
+                            }
+                        ]
+                    }
+                },
+                "NightClub": {
+                    "ageUpTo18": {
+                        "equal_to_profile": "Entry"
+                    },
+                    "age18AndOlder": {
+                        "equal_to_profile": "Entry"
+                    }
+                }
+            }
+        },
+        {
+            "id": "Recovery",
+            "schema_version": 1,
+            "regions": {
+                "include": ["all"]
+            },
+            "certificate_type": "recovery",
+            "certificate_type_conditions": [
+                "containsExactlyOneCertificate",
+                "containsOneRecoveryCertificate"
+            ],
+            "valid_from": "2021-01-01T22:00:00Z",
+            "valid_until": "2030-06-01T00:00:00Z",
+            "general_conditions": [
+                "isRecoveryTargetingCovid19",
+                "isRecoveryMoreThan11DaysAgo",
+                "isRecoveryLessThan180DaysAgo"
+            ],
+            "profiles": {
+                "Entry": {
+                    "all": {
+                        "valid_until": [
+                            {
+                                "value": "#payload.r.0.fr#",
+                                "plus_unit": "day",
+                                "plus_interval": 180,
+                                "format": "date"
+                            }
+                        ]
+                    }
+                },
+                "NightClub": {
+                    "all": {
+                        "equal_to_profile": "Entry"
+                    }
+                }
+            }
+        },
+        {
+            "id": "PCR-Wien",
+            "schema_version": 1,
+            "regions": {
+                "include": ["W"]
+            },
+            "certificate_type": "test",
+            "certificate_type_conditions": [
+                "containsExactlyOneCertificate",
+                "containsOneTestCertificate",
+                "isPCRTest"
+            ],
+            "valid_from": "2021-01-01T22:00:00Z",
+            "valid_until": "2030-06-01T00:00:00Z",
+            "general_rules": [
+                
+                "isTestTargetingCovid19",
+                "isSampleCollectionBeforeValidationClock",
+                "isNegativeTestResult"
+            ],
+            "profiles": {
+                "Entry": {
+                    "all": {
+                        "conditions": [
+                            [
+                                "isSampleCollectionLessThan48HoursAgo"
+                            ]
+                        ],
+                        "valid_from": [
+                            {
+                                "value": "#payload.t.0.sc#",
+                                "plus_unit": "",
+                                "plus_interval": 0,
+                                "format": "dateTime"
+                            }
+                        ],
+                        "valid_until": [
+                            {
+                                "value": "#payload.t.0.sc#",
+                                "plus_unit": "hour",
+                                "plus_interval": 48,
+                                "format": "dateTime"
+                            }
+                        ]
+                    }
+                },
+                "NightClub": {
+                    "all": {
+                        "equal_to_profile": "Entry"
+                    }
+                }
+            }
+        },
+        {
+            "id": "PCR-Bundesländer",
+            "schema_version": 1,
+            "regions": {
+                "include": ["all"],
+                "exclude": ["W"]
+            },
+            "certificate_type": "test",
+            "certificate_type_conditions": [
+                "containsExactlyOneCertificate",
+                "containsOneTestCertificate",
+                "isPCRTest"
+            ],
+            "valid_from": "2021-01-01T22:00:00Z",
+            "valid_until": "2030-06-01T00:00:00Z",
+            "general_rules": [
+                
+                "isTestTargetingCovid19",
+                "isSampleCollectionBeforeValidationClock",
+                "isNegativeTestResult"
+            ],
+            "profiles": {
+                "Entry": {
+                    "all": {
+                        "conditions": [
+                            [
+                                "isSampleCollectionLessThan72HoursAgo"
+                            ]
+                        ],
+                        "valid_from": [
+                            {
+                                "value": "#payload.t.0.sc#",
+                                "plus_unit": "",
+                                "plus_interval": 0,
+                                "format": "dateTime"
+                            }
+                        ],
+                        "valid_until": [
+                            {
+                                "value": "#payload.t.0.sc#",
+                                "plus_unit": "hour",
+                                "plus_interval": 72,
+                                "format": "dateTime"
+                            }
+                        ]
+                    }
+                },
+                "NightClub": {
+                    "all": {
+                        "equal_to_profile": "Entry"
+                    }
+                }
+            }
+        },
+        {
+            "id": "RAT",
+            "schema_version": 1,
+            "regions": {
+                "include": ["all"]
+            },
+            "certificate_type": "test",
+            "certificate_type_conditions": [
+                "containsExactlyOneCertificate",
+                "containsOneTestCertificate",
+                "isRATTest"
+            ],
+            "valid_from": "2021-01-01T22:00:00Z",
+            "valid_until": "2030-06-01T00:00:00Z",
+            "general_rules": [
+                "isTestTargetingCovid19",
+                "isSampleCollectionBeforeValidationClock",
+                "isNegativeTestResult"
+            ],
+            "profiles": {
+                "Entry": {
+                    "all": {
+                        "conditions": [
+                            [
+                                "isSampleCollectionLessThan24HoursAgo"
+                            ]
+                        ],
+                        "valid_from": [
+                            {
+                                "value": "#payload.t.0.sc#",
+                                "plus_unit": "",
+                                "plus_interval": 0,
+                                "format": "dateTime"
+                            }
+                        ],
+                        "valid_until": [
+                            {
+                                "value": "#payload.t.0.sc#",
+                                "plus_unit": "hour",
+                                "plus_interval": 24,
+                                "format": "dateTime"
+                            }
+                        ]
+                    }
+                },
+                "NightClub": {
+                    "all": {
+                        "equal_to_profile": "Entry"
+                    }
+                }
+            }
+        }
+    ]
+}
